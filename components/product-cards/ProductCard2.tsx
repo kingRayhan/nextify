@@ -4,13 +4,13 @@ import React from "react";
 const ProductCard2 = ({ product }) => {
   return (
     <div
-      className="group box-border overflow-hidden flex rounded-md cursor-pointer pe-0 md:pb-1 flex-col items-start bg-white"
+      className="box-border flex flex-col items-start overflow-hidden bg-white rounded-md cursor-pointer group pe-0 md:pb-1"
       role="button"
       title="Adidas Shoes Black"
     >
       <div className="flex mb-3 md:mb-3.5 pb-0">
         <img
-          className="bg-gray-300 object-cover rounded-s-md rounded-md transition duration-150 ease-linear transform group-hover:scale-105"
+          className="object-cover transition duration-150 ease-linear transform bg-gray-300 rounded-md rounded-s-md group-hover:scale-105"
           src={product.imageSrc}
           alt={product.imageAlt}
         />
