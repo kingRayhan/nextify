@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="mx-auto max-w-[1920px] px-4 md:px-8 2xl:px-16">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 md:gap-9 xl:gap-5 pb-9 md:pb-14 lg:pb-16 2xl:pb-20 3xl:pb-24 lg:mb-0.5 2xl:mb-0 3xl:-mb-1">
           <div className="pb-3 md:pb-0">
-            <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
+            <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
               Social
             </h4>
             <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
@@ -101,7 +101,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="pb-3 md:pb-0">
-            <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
+            <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
               Contact
             </h4>
             <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
@@ -116,7 +116,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   yourexample@email.com
                 </a>
@@ -124,7 +124,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   example@email.com
                 </a>
@@ -132,7 +132,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   Call us: +1 254 568-5479
                 </a>
@@ -140,7 +140,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="pb-3 md:pb-0">
-            <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
+            <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
               About
             </h4>
             <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
@@ -155,7 +155,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   Customer Support
                 </a>
@@ -171,7 +171,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   Copyright
                 </a>
@@ -179,7 +179,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="pb-3 md:pb-0">
-            <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
+            <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
               Customer Care
             </h4>
             <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
@@ -194,7 +194,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   Shipping &amp; Delivery
                 </a>
@@ -202,7 +202,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   Return &amp; Exchanges
                 </a>
@@ -210,7 +210,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="pb-3 md:pb-0">
-            <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
+            <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
               Our Information
             </h4>
             <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
@@ -241,7 +241,7 @@ const Footer = () => {
               <li className="flex items-baseline">
                 <a
                   className="transition-colors duration-200 hover:text-black"
-                  href="/"
+                  href="#"
                 >
                   Site Map
                 </a>
@@ -249,7 +249,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="pb-3 md:pb-0">
-            <h4 className="text-heading text-sm md:text-base xl:text-lg font-semibold mb-5 2xl:mb-6 3xl:mb-7">
+            <h4 className="mb-5 text-sm font-semibold text-heading md:text-base xl:text-lg 2xl:mb-6 3xl:mb-7">
               Top Categories
             </h4>
             <ul className="text-xs lg:text-sm text-body flex flex-col space-y-3 lg:space-y-3.5">
@@ -258,7 +258,7 @@ const Footer = () => {
                   className="transition-colors duration-200 hover:text-black"
                   href="/search"
                 >
-                  Men's Wear
+                  Men&apos;s Wear
                 </a>
               </li>
               <li className="flex items-baseline">
@@ -266,7 +266,7 @@ const Footer = () => {
                   className="transition-colors duration-200 hover:text-black"
                   href="/search"
                 >
-                  Men's Wear
+                  Men&apos;s Wear
                 </a>
               </li>
               <li className="flex items-baseline">
@@ -274,7 +274,7 @@ const Footer = () => {
                   className="transition-colors duration-200 hover:text-black"
                   href="/search"
                 >
-                  Kid's Wear
+                  Kid&apos;s Wear
                 </a>
               </li>
               <li className="flex items-baseline">

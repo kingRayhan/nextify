@@ -1,19 +1,28 @@
+import Container from "@/components/Container";
 import AppLayout from "@/components/layouts/AppLayout";
 import ProductCard2 from "@/components/product-cards/ProductCard2";
 import ProductList from "@/components/ProductList2";
 import storeFront from "@/lib/storeFront";
+import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next/types";
 import React from "react";
 
 const CollectionPage = ({ collection, products }) => {
   return (
-    <AppLayout>
-      <pre>{JSON.stringify(collection, undefined, 2)}</pre>
-      <ProductList
-        products={products}
-        title={`Product collection of ${collection.title}`}
-      />
-    </AppLayout>
+    <>
+      <Head>
+        <title>Collection | {collection.title}</title>
+      </Head>
+      <AppLayout>
+        <Container>
+          <h1 className="mt-8 text-3xl font-bold">{collection.title}</h1>
+        </Container>
+        <ProductList
+          products={products}
+          title={`Product collection of ${collection.title}`}
+        />
+      </AppLayout>
+    </>
   );
 };
 
@@ -22,7 +31,7 @@ export default CollectionPage;
 const gql = String.raw;
 const CollectionHandlesQuery = gql`
   {
-    collections(first: 6) {
+    collections(first: 20) {
       edges {
         node {
           handle
@@ -34,14 +43,14 @@ const CollectionHandlesQuery = gql`
 
 const CollectionQuery = gql`
   query ($handle: String!) {
-    collectionByHandle(handle: $handle) {
+    collection(handle: $handle) {
       id
       title
       image {
         altText
         url
       }
-      products(first: 8) {
+      products(first: 20) {
         edges {
           node {
             title
@@ -77,16 +86,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { data: collection } = await storeFront(CollectionQuery, {
+  const {
+    data: { collection },
+  } = await storeFront(CollectionQuery, {
     handle: params.handle,
   });
-  const { id, title, image } = collection.collectionByHandle;
+  const { id, title, image } = collection;
   return {
     props: {
       collection: { id, title, image },
-      products: collection.collectionByHandle.products.edges.map(
-        (edge) => edge.node
-      ),
+      products: collection.products.edges.map((edge) => edge.node),
     },
     revalidate: 5,
   };

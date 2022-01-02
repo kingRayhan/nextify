@@ -1,14 +1,14 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { SearchIcon, ShoppingBagIcon } from "@heroicons/react/outline";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
+import storeFront from "@/lib/storeFront";
 
 const navigation = [
-  { name: "Women", href: "#" },
-  { name: "Men", href: "#" },
-  { name: "Company", href: "#" },
-  { name: "Stores", href: "#" },
+  { name: "Men", href: "/collections/men" },
+  { name: "Women", href: "/collections/womens" },
+  { name: "Jewlery", href: "/collections/jewelery" },
 ];
 const products = [
   {
@@ -33,6 +33,8 @@ const products = [
   },
 ];
 
+const gql = String.raw;
+
 export default function Navbar() {
   return (
     <header className="relative bg-white border-b border-gray-200">
@@ -56,13 +58,11 @@ export default function Navbar() {
             <div className="absolute inset-x-0 bottom-0 overflow-x-auto border-t sm:static sm:border-t-0">
               <div className="flex items-center px-4 space-x-8 h-14 sm:h-auto">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    {item.name}
-                  </a>
+                  <Link key={item.id} href={item.href}>
+                    <a className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                      {item.name}
+                    </a>
+                  </Link>
                 ))}
               </div>
             </div>

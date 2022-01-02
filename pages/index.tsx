@@ -1,20 +1,23 @@
 import FeaturedCategory from "@/components/FeaturedCategory";
 import AppLayout from "@/components/layouts/AppLayout";
 import PromoSection from "@/components/PromoSection";
-import ProductList from "@/components/ProductList";
 import ProductList2 from "@/components/ProductList2";
 import storeFront from "@/lib/storeFront";
 import { GetStaticProps } from "next/types";
+import Head from "next/head";
 
 const HomePage = ({ products, collections }) => {
   return (
-    <AppLayout>
-      {/* <pre>{JSON.stringify({ collections }, undefined, 2)}</pre> */}
-      <ProductList2 products={products} />
-      {/* <ProductList /> */}
-      <FeaturedCategory collections={collections} />
-      <PromoSection />
-    </AppLayout>
+    <>
+      <Head>
+        <title>Next Shopify</title>
+      </Head>
+      <AppLayout>
+        <ProductList2 products={products} />
+        <FeaturedCategory collections={collections} />
+        <PromoSection />
+      </AppLayout>
+    </>
   );
 };
 
