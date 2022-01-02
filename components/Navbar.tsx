@@ -58,7 +58,7 @@ export default function Navbar() {
             <div className="absolute inset-x-0 bottom-0 overflow-x-auto border-t sm:static sm:border-t-0">
               <div className="flex items-center px-4 space-x-8 h-14 sm:h-auto">
                 {navigation.map((item) => (
-                  <Link key={item.id} href={item.href}>
+                  <Link key={item.name} href={item.href}>
                     <a className="text-sm font-medium text-gray-700 hover:text-gray-800">
                       {item.name}
                     </a>
