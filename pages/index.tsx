@@ -13,9 +13,9 @@ const HomePage = ({ products, collections }) => {
         <title>Next Shopify</title>
       </Head>
       <AppLayout>
+        <PromoSection />
         <ProductList2 products={products} />
         <FeaturedCategory collections={collections} />
-        <PromoSection />
       </AppLayout>
     </>
   );

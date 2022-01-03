@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 /* This example requires Tailwind CSS v2.0+ */
 export default function PromoSection() {
   return (
@@ -82,12 +84,11 @@ export default function PromoSection() {
                 </div>
               </div>
 
-              <a
-                href="#"
-                className="inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700"
-              >
-                Shop Collection
-              </a>
+              <Link href="/collections/clothings">
+                <a className="inline-block px-8 py-3 font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700">
+                  Shop Collection
+                </a>
+              </Link>
             </div>
           </div>
         </div>
