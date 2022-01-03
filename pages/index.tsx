@@ -24,7 +24,7 @@ const HomePage = ({ products, collections }) => {
 export default HomePage;
 
 const gql = String.raw;
-const ProductQuery = gql`
+const query = gql`
   {
     products(first: 8) {
       edges {
@@ -45,11 +45,6 @@ const ProductQuery = gql`
         }
       }
     }
-  }
-`;
-
-const CollectionQuery = gql`
-  {
     collections(first: 3) {
       edges {
         node {
@@ -69,11 +64,8 @@ const CollectionQuery = gql`
 
 export const getStaticProps: GetStaticProps = async () => {
   const {
-    data: { products },
-  } = await storeFront(ProductQuery);
-  const {
-    data: { collections },
-  } = await storeFront(CollectionQuery);
+    data: { products, collections },
+  } = await storeFront(query);
   return {
     props: {
       products: products.edges.map((edge) => edge.node),

@@ -74,9 +74,11 @@ const CollectionQuery = gql`
 `;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data: collections } = await storeFront(CollectionHandlesQuery);
+  const {
+    data: { collections },
+  } = await storeFront(CollectionHandlesQuery);
   return {
-    paths: collections.collections.edges.map((edge) => ({
+    paths: collections.edges.map((edge) => ({
       params: {
         handle: edge.node.handle,
       },

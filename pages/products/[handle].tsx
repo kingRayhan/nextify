@@ -39,6 +39,10 @@ import {
 } from "@heroicons/react/outline";
 import { StarIcon } from "@heroicons/react/solid";
 import AppLayout from "@/components/layouts/AppLayout";
+import { GetStaticPaths, GetStaticProps } from "next/types";
+import storeFront from "@/lib/storeFront";
+import Link from "next/link";
+import RecommendedProducts from "@/components/ProductDetails/RecommendedProducts";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 const navigation = {
@@ -242,500 +246,199 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
-  const [open, setOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+const Breadcrumbs = ({ collection, productTitle }) => (
+  <nav aria-label="Breadcrumb">
+    <ol
+      role="list"
+      className="flex items-center max-w-2xl px-4 mx-auto space-x-2 sm:px-6 lg:max-w-7xl lg:px-8"
+    >
+      <li>
+        <div className="flex items-center">
+          <Link href={`/collections/${collection.handle}`}>
+            <a className="mr-2 text-sm font-medium text-gray-900">
+              {collection.title}
+            </a>
+          </Link>
+          <svg
+            width={16}
+            height={20}
+            viewBox="0 0 16 20"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            className="w-4 h-5 text-gray-300"
+          >
+            <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
+          </svg>
+        </div>
+      </li>
+
+      <li className="text-sm">
+        <span
+          aria-current="page"
+          className="font-medium text-gray-500 hover:text-gray-600"
+        >
+          {productTitle}
+        </span>
+      </li>
+    </ol>
+  </nav>
+);
+
+const Gallery = ({ images }) => {
+  return (
+    <div className="max-w-2xl mx-auto mt-6 sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+      <div className="hidden overflow-hidden rounded-lg aspect-w-3 aspect-h-4 lg:block">
+        <img
+          src={images[0]?.url}
+          alt={images[0]?.altText}
+          className="object-cover object-center w-full h-full"
+        />
+      </div>
+      <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
+        <div className="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
+          <img
+            src={images[1]?.url}
+            alt={images[1]?.altText}
+            className="object-cover object-center w-full h-full"
+          />
+        </div>
+        <div className="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
+          <img
+            src={images[2]?.url}
+            alt={images[2]?.altText}
+            className="object-cover object-center w-full h-full"
+          />
+        </div>
+      </div>
+      <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
+        <img
+          src={images[3]?.url}
+          alt={images[3]?.altText}
+          className="object-cover object-center w-full h-full"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default function ProductDetails({ product }) {
+  // const [open, setOpen] = useState(false);
+  // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  // const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+
+  const images = product.images.edges.map((edge) => ({ ...edge.node }));
 
   return (
     <AppLayout>
-      <div className="bg-white">
-        <main className="pt-10 sm:pt-16">
-          <nav aria-label="Breadcrumb">
-            <ol
-              role="list"
-              className="flex items-center max-w-2xl px-4 mx-auto space-x-2 sm:px-6 lg:max-w-7xl lg:px-8"
-            >
-              {product.breadcrumbs.map((breadcrumb) => (
-                <li key={breadcrumb.id}>
-                  <div className="flex items-center">
-                    <a
-                      href={breadcrumb.href}
-                      className="mr-2 text-sm font-medium text-gray-900"
-                    >
-                      {breadcrumb.name}
-                    </a>
-                    <svg
-                      width={16}
-                      height={20}
-                      viewBox="0 0 16 20"
-                      fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                      className="w-4 h-5 text-gray-300"
-                    >
-                      <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                    </svg>
-                  </div>
-                </li>
-              ))}
-              <li className="text-sm">
-                <a
-                  href={product.href}
-                  aria-current="page"
-                  className="font-medium text-gray-500 hover:text-gray-600"
-                >
-                  {product.name}
-                </a>
-              </li>
-            </ol>
-          </nav>
+      <pre>{JSON.stringify(images, undefined, 2)}</pre>
+      <main className="pt-10 sm:pt-16">
+        <Breadcrumbs
+          collection={product?.collections?.edges[0].node}
+          productTitle={product.title}
+        />
 
-          {/* Image gallery */}
-          <div className="max-w-2xl mx-auto mt-6 sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-            <div className="hidden overflow-hidden rounded-lg aspect-w-3 aspect-h-4 lg:block">
-              <img
-                src={product.images[0].src}
-                alt={product.images[0].alt}
-                className="object-cover object-center w-full h-full"
-              />
-            </div>
-            <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-              <div className="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
-                <img
-                  src={product.images[1].src}
-                  alt={product.images[1].alt}
-                  className="object-cover object-center w-full h-full"
-                />
-              </div>
-              <div className="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
-                <img
-                  src={product.images[2].src}
-                  alt={product.images[2].alt}
-                  className="object-cover object-center w-full h-full"
-                />
-              </div>
-            </div>
-            <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
-              <img
-                src={product.images[3].src}
-                alt={product.images[3].alt}
-                className="object-cover object-center w-full h-full"
-              />
-            </div>
+        {/* Image gallery */}
+        <Gallery images={images} />
+
+        <div className="max-w-2xl mx-auto pt-10 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
+          <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+              {product.title}
+            </h1>
           </div>
+        </div>
 
-          {/* Product info */}
-          <div className="max-w-2xl mx-auto pt-10 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
-            <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
-                {product.name}
-              </h1>
-            </div>
-
-            {/* Options */}
-            <div className="mt-4 lg:mt-0 lg:row-span-3">
-              <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl text-gray-900">{product.price}</p>
-
-              {/* Reviews */}
-              <div className="mt-6">
-                <h3 className="sr-only">Reviews</h3>
-                <div className="flex items-center">
-                  <div className="flex items-center">
-                    {[0, 1, 2, 3, 4].map((rating) => (
-                      <StarIcon
-                        key={rating}
-                        className={classNames(
-                          reviews.average > rating
-                            ? "text-gray-900"
-                            : "text-gray-200",
-                          "h-5 w-5 flex-shrink-0"
-                        )}
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                  <p className="sr-only">{reviews.average} out of 5 stars</p>
-                  <a
-                    href={reviews.href}
-                    className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    {reviews.totalCount} reviews
-                  </a>
-                </div>
-              </div>
-
-              <form className="mt-10">
-                {/* Colors */}
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">Color</h3>
-
-                  <RadioGroup
-                    value={selectedColor}
-                    onChange={setSelectedColor}
-                    className="mt-4"
-                  >
-                    <RadioGroup.Label className="sr-only">
-                      Choose a color
-                    </RadioGroup.Label>
-                    <div className="flex items-center space-x-3">
-                      {product.colors.map((color) => (
-                        <RadioGroup.Option
-                          key={color.name}
-                          value={color}
-                          className={({ active, checked }) =>
-                            classNames(
-                              color.selectedClass,
-                              active && checked ? "ring ring-offset-1" : "",
-                              !active && checked ? "ring-2" : "",
-                              "-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none"
-                            )
-                          }
-                        >
-                          <RadioGroup.Label as="p" className="sr-only">
-                            {color.name}
-                          </RadioGroup.Label>
-                          <span
-                            aria-hidden="true"
-                            className={classNames(
-                              color.class,
-                              "h-8 w-8 border border-black border-opacity-10 rounded-full"
-                            )}
-                          />
-                        </RadioGroup.Option>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                {/* Sizes */}
-                <div className="mt-10">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                    <a
-                      href="#"
-                      className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      Size guide
-                    </a>
-                  </div>
-
-                  <RadioGroup
-                    value={selectedSize}
-                    onChange={setSelectedSize}
-                    className="mt-4"
-                  >
-                    <RadioGroup.Label className="sr-only">
-                      Choose a size
-                    </RadioGroup.Label>
-                    <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                      {product.sizes.map((size) => (
-                        <RadioGroup.Option
-                          key={size.name}
-                          value={size}
-                          disabled={!size.inStock}
-                          className={({ active }) =>
-                            classNames(
-                              size.inStock
-                                ? "bg-white shadow-sm text-gray-900 cursor-pointer"
-                                : "bg-gray-50 text-gray-200 cursor-not-allowed",
-                              active ? "ring-2 ring-indigo-500" : "",
-                              "group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
-                            )
-                          }
-                        >
-                          {({ active, checked }) => (
-                            <>
-                              <RadioGroup.Label as="p">
-                                {size.name}
-                              </RadioGroup.Label>
-                              {size.inStock ? (
-                                <div
-                                  className={classNames(
-                                    active ? "border" : "border-2",
-                                    checked
-                                      ? "border-indigo-500"
-                                      : "border-transparent",
-                                    "absolute -inset-px rounded-md pointer-events-none"
-                                  )}
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <div
-                                  aria-hidden="true"
-                                  className="absolute border-2 border-gray-200 rounded-md pointer-events-none -inset-px"
-                                >
-                                  <svg
-                                    className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
-                                    viewBox="0 0 100 100"
-                                    preserveAspectRatio="none"
-                                    stroke="currentColor"
-                                  >
-                                    <line
-                                      x1={0}
-                                      y1={100}
-                                      x2={100}
-                                      y2={0}
-                                      vectorEffect="non-scaling-stroke"
-                                    />
-                                  </svg>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </RadioGroup.Option>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <button
-                  type="submit"
-                  className="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Add to bag
-                </button>
-              </form>
-            </div>
-
-            <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              {/* Description and details */}
-              <div>
-                <h3 className="sr-only">Description</h3>
-
-                <div className="space-y-6">
-                  <p className="text-base text-gray-900">
-                    {product.description}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-10">
-                <h3 className="text-sm font-medium text-gray-900">
-                  Highlights
-                </h3>
-
-                <div className="mt-4">
-                  <ul role="list" className="pl-4 space-y-2 text-sm list-disc">
-                    {product.highlights.map((highlight) => (
-                      <li key={highlight} className="text-gray-400">
-                        <span className="text-gray-600">{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <section aria-labelledby="shipping-heading" className="mt-10">
-                <h2
-                  id="shipping-heading"
-                  className="text-sm font-medium text-gray-900"
-                >
-                  Details
-                </h2>
-
-                <div className="mt-4 space-y-6">
-                  <p className="text-sm text-gray-600">{product.details}</p>
-                </div>
-              </section>
-            </div>
-
-            <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              {/* Reviews */}
-              <section
-                aria-labelledby="reviews-heading"
-                className="pt-10 border-t border-gray-200 lg:pt-16"
-              >
-                <h2 id="reviews-heading" className="sr-only">
-                  Reviews
-                </h2>
-
-                <div className="space-y-10">
-                  {reviews.featured.map((review) => (
-                    <div key={review.id} className="flex flex-col sm:flex-row">
-                      <div className="order-2 mt-6 sm:mt-0 sm:ml-16">
-                        <h3 className="text-sm font-medium text-gray-900">
-                          {review.title}
-                        </h3>
-                        <p className="sr-only">
-                          {review.rating} out of 5 stars
-                        </p>
-
-                        <div
-                          className="mt-3 space-y-6 text-sm text-gray-600"
-                          dangerouslySetInnerHTML={{ __html: review.content }}
-                        />
-                      </div>
-
-                      <div className="flex items-center order-1 sm:flex-col sm:items-start">
-                        <img
-                          src={review.avatarSrc}
-                          alt={`${review.author}.`}
-                          className="w-12 h-12 rounded-full"
-                        />
-
-                        <div className="ml-4 sm:ml-0 sm:mt-4">
-                          <p className="text-sm font-medium text-gray-900">
-                            {review.author}
-                          </p>
-                          <div className="flex items-center mt-2">
-                            {[0, 1, 2, 3, 4].map((rating) => (
-                              <StarIcon
-                                key={rating}
-                                className={classNames(
-                                  review.rating > rating
-                                    ? "text-gray-900"
-                                    : "text-gray-200",
-                                  "h-5 w-5 flex-shrink-0"
-                                )}
-                                aria-hidden="true"
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-          </div>
-          <section
-            aria-labelledby="related-products-heading"
-            className="bg-white"
-          >
-            <div className="max-w-2xl px-4 py-24 mx-auto sm:px-6 lg:max-w-7xl lg:px-8">
-              <h2
-                id="related-products-heading"
-                className="text-xl font-bold tracking-tight text-gray-900"
-              >
-                Customers also purchased
-              </h2>
-
-              <div className="grid grid-cols-1 mt-6 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                {products.map((product) => (
-                  <div key={product.id} className="relative group">
-                    <div className="w-full overflow-hidden bg-gray-200 rounded-md min-h-80 aspect-w-1 aspect-h-1 group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                      <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        className="object-cover object-center w-full h-full lg:w-full lg:h-full"
-                      />
-                    </div>
-                    <div className="flex justify-between mt-4">
-                      <div>
-                        <h3 className="text-sm text-gray-700">
-                          <a href={product.href}>
-                            <span
-                              aria-hidden="true"
-                              className="absolute inset-0"
-                            />
-                            {product.name}
-                          </a>
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {product.color}
-                        </p>
-                      </div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {product.price}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <footer
-          aria-labelledby="footer-heading"
-          className="bg-white border-t border-gray-200"
-        >
-          <h2 id="footer-heading" className="sr-only">
-            Footer
-          </h2>
-          <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 gap-8 py-20 sm:gap-y-0 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="grid grid-cols-1 gap-y-10 lg:col-span-2 lg:grid-cols-2 lg:gap-y-0 lg:gap-x-8">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">Account</h3>
-                  <ul role="list" className="mt-6 space-y-6">
-                    {footerNavigation.account.map((item) => (
-                      <li key={item.name} className="text-sm">
-                        <a
-                          href={item.href}
-                          className="text-gray-500 hover:text-gray-600"
-                        >
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">Service</h3>
-                  <ul role="list" className="mt-6 space-y-6">
-                    {footerNavigation.service.map((item) => (
-                      <li key={item.name} className="text-sm">
-                        <a
-                          href={item.href}
-                          className="text-gray-500 hover:text-gray-600"
-                        >
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-y-10 lg:col-span-2 lg:grid-cols-2 lg:gap-y-0 lg:gap-x-8">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">Company</h3>
-                  <ul role="list" className="mt-6 space-y-6">
-                    {footerNavigation.company.map((item) => (
-                      <li key={item.name} className="text-sm">
-                        <a
-                          href={item.href}
-                          className="text-gray-500 hover:text-gray-600"
-                        >
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">Connect</h3>
-                  <ul role="list" className="mt-6 space-y-6">
-                    {footerNavigation.connect.map((item) => (
-                      <li key={item.name} className="text-sm">
-                        <a
-                          href={item.href}
-                          className="text-gray-500 hover:text-gray-600"
-                        >
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="py-10 border-t border-gray-100 sm:flex sm:items-center sm:justify-between">
-              <div className="flex items-center justify-center text-sm text-gray-500">
-                <p>Shipping to Canada ($CAD)</p>
-                <p className="pl-3 ml-3 border-l border-gray-200">English</p>
-              </div>
-              <p className="mt-6 text-sm text-center text-gray-500 sm:mt-0">
-                &copy; 2021 Clothing Company, Ltd.
-              </p>
-            </div>
-          </div>
-        </footer>
-      </div>
+        <RecommendedProducts />
+      </main>
     </AppLayout>
   );
 }
+
+const gql = String.raw;
+const ProductQuery = gql`
+  query ($handle: String!) {
+    product(handle: $handle) {
+      id
+      title
+      handle
+      availableForSale
+      descriptionHtml
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      compareAtPriceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      images(first: 6) {
+        edges {
+          node {
+            altText
+            url
+          }
+        }
+      }
+      tags
+      collections(first: 1) {
+        edges {
+          node {
+            handle
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+`;
+
+const ProductHandlesQuery = gql`
+  {
+    products(first: 100) {
+      edges {
+        node {
+          handle
+        }
+      }
+    }
+  }
+`;
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const {
+    data: { product },
+  } = await storeFront(ProductQuery, {
+    handle: params.handle,
+  });
+
+  console.log(product);
+  return {
+    props: {
+      product,
+    },
+    revalidate: 10,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const {
+    data: { products },
+  } = await storeFront(ProductHandlesQuery);
+
+  const paths = products.edges.map((edge) => ({
+    params: {
+      handle: edge.node.handle,
+    },
+  }));
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+};

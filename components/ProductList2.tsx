@@ -18,7 +18,7 @@ import Link from "next/link";
 
 const Product = ({ product }) => {
   return (
-    <div key={product.id}>
+    <div>
       <div className="relative">
         <div className="relative w-full overflow-hidden rounded-lg h-72">
           <a className="bg-red-400 ">

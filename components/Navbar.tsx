@@ -7,8 +7,8 @@ import storeFront from "@/lib/storeFront";
 
 const navigation = [
   { name: "Men", href: "/collections/men" },
-  { name: "Women", href: "/collections/womens" },
-  { name: "Jewlery", href: "/collections/jewelery" },
+  { name: "Women", href: "/collections/women" },
+  { name: "Ornaments", href: "/collections/ornaments" },
 ];
 const products = [
   {
