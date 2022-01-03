@@ -5,11 +5,11 @@ import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 import storeFront from "@/lib/storeFront";
 
-const navigation = [
-  { name: "Men", href: "/collections/men" },
-  { name: "Women", href: "/collections/women" },
-  { name: "Ornaments", href: "/collections/ornaments" },
-];
+// const navigation = [
+//   { name: "Men", href: "/collections/men" },
+//   { name: "Women", href: "/collections/women" },
+//   { name: "Ornaments", href: "/collections/ornaments" },
+// ];
 const products = [
   {
     id: 1,
@@ -36,6 +36,38 @@ const products = [
 const gql = String.raw;
 
 export default function Navbar() {
+  const [navigation, setNavigation] = useState([]);
+
+  const loadCollections = async () => {
+    const {
+      data: { collections },
+    } = await storeFront(gql`
+      {
+        collections(first: 5) {
+          edges {
+            node {
+              id
+              title
+              handle
+            }
+          }
+        }
+      }
+    `);
+
+    setNavigation(
+      collections.edges.map(({ node }) => ({
+        id: node.id,
+        title: node.title,
+        href: `/collections/${node.handle}`,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    loadCollections();
+  }, []);
+
   return (
     <header className="relative bg-white border-b border-gray-200">
       <nav aria-label="Top" className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -58,9 +90,9 @@ export default function Navbar() {
             <div className="absolute inset-x-0 bottom-0 overflow-x-auto border-t sm:static sm:border-t-0">
               <div className="flex items-center px-4 space-x-8 h-14 sm:h-auto">
                 {navigation.map((item) => (
-                  <Link key={item.name} href={item.href}>
+                  <Link key={item.id} href={item.href}>
                     <a className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                      {item.name}
+                      {item.title}
                     </a>
                   </Link>
                 ))}
