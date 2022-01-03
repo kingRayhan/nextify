@@ -324,7 +324,7 @@ const Gallery = ({ images }) => {
 };
 
 export default function ProductDetails({ product }) {
-  const { query } = useRouter();
+  const router = useRouter();
   const [relatedProductsLoading, setRelatedProductLoading] =
     useState<boolean>(false);
 
@@ -371,7 +371,7 @@ export default function ProductDetails({ product }) {
 
   useEffect(() => {
     relatedProductsList(product.id);
-  }, []);
+  }, [router]);
 
   return (
     <AppLayout>
