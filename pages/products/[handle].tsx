@@ -22,7 +22,7 @@
   }
   ```
 */
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
   Popover,
@@ -43,6 +43,7 @@ import { GetStaticPaths, GetStaticProps } from "next/types";
 import storeFront from "@/lib/storeFront";
 import Link from "next/link";
 import RecommendedProducts from "@/components/ProductDetails/RecommendedProducts";
+import { useRouter } from "next/router";
 
 const currencies = ["CAD", "USD", "AUD", "EUR", "GBP"];
 const navigation = {
@@ -323,15 +324,57 @@ const Gallery = ({ images }) => {
 };
 
 export default function ProductDetails({ product }) {
+  const { query } = useRouter();
+  const [relatedProductsLoading, setRelatedProductLoading] =
+    useState<boolean>(false);
+
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   // const [open, setOpen] = useState(false);
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   // const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   const images = product.images.edges.map((edge) => ({ ...edge.node }));
 
+  // get related products
+  const relatedProductsList = async (productId) => {
+    const gql = String.raw;
+    const query = gql`
+      query ($id: ID!) {
+        productRecommendations(productId: $id) {
+          id
+          title
+          handle
+          tags
+          featuredImage {
+            altText
+            url
+          }
+          priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    `;
+    setRelatedProductLoading(true);
+    const {
+      data: { productRecommendations },
+    } = await storeFront(query, {
+      id: productId,
+    });
+
+    setRelatedProducts(productRecommendations);
+    setRelatedProductLoading(false);
+  };
+
+  useEffect(() => {
+    relatedProductsList(product.id);
+  }, []);
+
   return (
     <AppLayout>
-      <pre>{JSON.stringify(images, undefined, 2)}</pre>
       <main className="pt-10 sm:pt-16">
         <Breadcrumbs
           collection={product?.collections?.edges[0].node}
@@ -349,7 +392,7 @@ export default function ProductDetails({ product }) {
           </div>
         </div>
 
-        <RecommendedProducts />
+        <RecommendedProducts products={relatedProducts} />
       </main>
     </AppLayout>
   );
@@ -416,14 +459,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   } = await storeFront(ProductQuery, {
     handle: params.handle,
   });
-
-  console.log(product);
   return {
     props: {
       product,
     },
     revalidate: 10,
   };
+
+  // .products.edges
+  //       .slice(1)
+  //       .map((edge) => edge.node),
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
