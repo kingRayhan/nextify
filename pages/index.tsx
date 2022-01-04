@@ -3,16 +3,28 @@ import AppLayout from "@/components/layouts/AppLayout";
 import PromoSection from "@/components/PromoSection";
 import ProductList2 from "@/components/ProductList2";
 import storeFront from "@/lib/storeFront";
-import { GetStaticProps } from "next/types";
-import Head from "next/head";
+import { GetServerSideProps, GetStaticProps } from "next/types";
+import { getCookies, getCookie, setCookies, removeCookies } from "cookies-next";
 
-const HomePage = ({ products, collections }) => {
+import Head from "next/head";
+import { useEffect } from "react";
+
+const HomePage = ({ products, collections, user }) => {
+  useEffect(() => {
+    // setCookies("user", {
+    //   name: "John Doe",
+    //   email: "example@example.com",
+    //   phone: "+1-234-567-8910",
+    //   address: "123 Main St, Anytown, CA 12345",
+    // });
+  });
   return (
     <>
       <Head>
         <title>Next Shopify</title>
       </Head>
       <AppLayout>
+        <pre>{JSON.stringify(user, undefined, 2)}</pre>
         <PromoSection />
         <ProductList2 products={products} />
         <FeaturedCategory collections={collections} />
@@ -62,12 +74,26 @@ const query = gql`
   }
 `;
 
-export const getStaticProps: GetStaticProps = async () => {
+// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+//   const user = {
+//     x: "x",
+//   };
+
+//   return {
+//     props: {
+//       user,
+//     },
+//   };
+// };
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const user = getCookie("user", { req, res });
   const {
     data: { products, collections },
   } = await storeFront(query);
   return {
     props: {
+      user,
       products: products.edges.map((edge) => edge.node),
       collections: collections.edges.map((edge) => edge.node),
     },
