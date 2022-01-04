@@ -74,28 +74,15 @@ const query = gql`
   }
 `;
 
-// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-//   const user = {
-//     x: "x",
-//   };
-
-//   return {
-//     props: {
-//       user,
-//     },
-//   };
-// };
-
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const user = getCookie("user", { req, res });
+export const getStaticProps: GetServerSideProps = async ({ req, res }) => {
   const {
     data: { products, collections },
   } = await storeFront(query);
   return {
     props: {
-      user,
       products: products.edges.map((edge) => edge.node),
       collections: collections.edges.map((edge) => edge.node),
     },
+    revalidate: 10,
   };
 };

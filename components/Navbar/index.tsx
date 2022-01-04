@@ -4,6 +4,7 @@ import { SearchIcon, ShoppingBagIcon } from "@heroicons/react/outline";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 import storeFront from "@/lib/storeFront";
+import Account from "./Account";
 
 // const navigation = [
 //   { name: "Men", href: "/collections/men" },
@@ -37,7 +38,6 @@ const gql = String.raw;
 
 export default function Navbar() {
   const [navigation, setNavigation] = useState([]);
-
   const loadCollections = async () => {
     const {
       data: { collections },
@@ -170,6 +170,8 @@ export default function Navbar() {
                   </Popover.Panel>
                 </Transition>
               </Popover>
+              {/* Accounts */}
+              <Account />
             </div>
           </div>
         </div>
