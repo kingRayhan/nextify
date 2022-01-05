@@ -172,6 +172,12 @@ export default function Navbar() {
               </Popover>
               {/* Accounts */}
               <Account />
+
+              <Link href="/auth/login">
+                <a className="text-sm font-medium text-gray-700 md:ml-8 hover:text-gray-800">
+                  Login
+                </a>
+              </Link>
             </div>
           </div>
         </div>

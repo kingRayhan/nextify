@@ -2,11 +2,14 @@ import AppButton from "@/components/Form/AppButton";
 import AppCheckbox from "@/components/Form/AppCheckbox";
 import AppForm from "@/components/Form/AppForm";
 import AppInput from "@/components/Form/AppInput";
+import ValidationErrors from "@/components/Form/ValidationErrors";
 import SplitScreenLayout from "@/components/layouts/SplitScreenLayout";
 import storeFront from "@/lib/storeFront";
 import Link from "next/link";
-import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
+import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
@@ -27,7 +30,7 @@ const query = gql`
     $lastName: String!
     $email: String!
     $password: String!
-    $phone: String
+    # $phone: String
     $acceptsMarketing: Boolean!
   ) {
     customerCreate(
@@ -36,12 +39,13 @@ const query = gql`
         lastName: $lastName
         email: $email
         password: $password
-        phone: $phone
+        # phone: $phone
         acceptsMarketing: $acceptsMarketing
       }
     ) {
       customer {
         id
+        displayName
       }
       customerUserErrors {
         code
@@ -51,16 +55,33 @@ const query = gql`
   }
 `;
 
-export default function RegisterPage() {
-  const [loading, serLoading] = useState<boolean>(false);
+export default function RegisterPage({ toast }) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const router = useRouter();
 
   const handleSubmit = async (values: any) => {
-    const { data } = await storeFront(query, values);
-    console.log(data);
+    setLoading(true);
+    console.log({ values });
+    setErrors([]);
+    const {
+      data: { customerCreate },
+    } = await storeFront(query, values);
+    setLoading(false);
+
+    if (customerCreate.customerUserErrors.length) {
+      setErrors(
+        customerCreate.customerUserErrors.map(({ message }) => message)
+      );
+    } else {
+      toast.success("Register success!");
+      router.push("/auth/login");
+    }
   };
 
   return (
     <SplitScreenLayout>
+      <Toaster />
       <div className="w-full max-w-sm mx-auto lg:w-96">
         <div>
           <img
@@ -75,24 +96,25 @@ export default function RegisterPage() {
 
         <div className="mt-8">
           <div className="mt-6">
+            <ValidationErrors className="mb-6" errors={errors} />
             <AppForm
               onSubmit={handleSubmit}
               initialValues={{
                 firstName: "",
                 lastName: "",
                 email: "",
-                phone: "",
+                // phone: "",
                 password: "",
                 comfirmPassword: "",
                 acceptsMarketing: false,
               }}
-              debug
+              debug={false}
               validationSchema={validationSchema}
             >
               <AppInput name="firstName" label="First name" />
               <AppInput name="lastName" label="Last name" />
               <AppInput name="email" label="Email address" />
-              <AppInput name="phone" label="Your phone number (Optional)" />
+              {/* <AppInput name="phone" label="Your phone number (Optional)" /> */}
               <AppInput name="password" label="Password" type="password" />
               <AppInput
                 name="comfirmPassword"
@@ -105,7 +127,7 @@ export default function RegisterPage() {
                 label="Accept marketing email"
               />
 
-              <AppButton>Register</AppButton>
+              <AppButton loading={loading}>Register</AppButton>
             </AppForm>
             {/* Form Footer start */}
             <div className="flex flex-col items-start justify-between gap-4 mt-10">
