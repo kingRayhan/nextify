@@ -28,6 +28,9 @@ const useUser = () => {
     removeCookies("token");
     setUser(null);
     setAuthenticated(false);
+
+    // reload
+    window.location.reload();
   };
 
   React.useEffect(() => {

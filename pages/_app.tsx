@@ -1,14 +1,16 @@
+import store from "@/store/store";
 import "@/styles/app.scss";
 import toast, { Toaster } from "react-hot-toast";
+import { Provider as ReduxtProvider } from "react-redux";
 
-function MyApp({ Component, pageProps }) {
+function NuxtifyApp({ Component, pageProps }) {
   pageProps.toast = toast;
   return (
-    <>
+    <ReduxtProvider store={store}>
       <Toaster />
       <Component {...pageProps} />
-    </>
+    </ReduxtProvider>
   );
 }
 
-export default MyApp;
+export default NuxtifyApp;

@@ -1,4 +1,5 @@
 import AppLayout from "@/components/layouts/AppLayout";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
 import useUser from "@/hooks/useUser";
 import getUser from "@/lib/getUser";
 import React from "react";
@@ -6,10 +7,10 @@ import React from "react";
 const Dashboard = () => {
   const { user, loading } = useUser();
   return (
-    <AppLayout>
+    <DashboardLayout>
       <h1>Dashboard</h1>
       <pre>{JSON.stringify(user, undefined, 2)}</pre>
-    </AppLayout>
+    </DashboardLayout>
   );
 };
 

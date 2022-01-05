@@ -23,8 +23,9 @@ const getUser = async (token: string) => {
   const {
     data: { customer },
   } = await storeFront(query, { token });
+  if (!customer) return null;
 
-  const avatar = getAvatarurl("rayhan095@gmail.com");
+  const avatar = getAvatarurl(customer.email);
 
   return { ...customer, avatar };
 };
