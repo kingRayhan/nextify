@@ -5,6 +5,7 @@ import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 import storeFront from "@/lib/storeFront";
 import Account from "./Account";
+import useUser from "@/hooks/useUser";
 
 // const navigation = [
 //   { name: "Men", href: "/collections/men" },
@@ -172,12 +173,6 @@ export default function Navbar() {
               </Popover>
               {/* Accounts */}
               <Account />
-
-              <Link href="/auth/login">
-                <a className="text-sm font-medium text-gray-700 md:ml-8 hover:text-gray-800">
-                  Login
-                </a>
-              </Link>
             </div>
           </div>
         </div>

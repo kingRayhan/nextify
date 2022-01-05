@@ -1,25 +1,40 @@
+import getUser from "@/lib/getUser";
 import storeFront from "@/lib/storeFront";
+import { getCookie, removeCookies } from "cookies-next";
+import cookies from "nookies";
 import React from "react";
-
-const gql = String.raw;
-const query = gql`
-  mutation ($token: String!) {
-    customer(customerAccessToken: $token) {
-      displayName
-      email
-    }
-  }
-`;
 
 const useUser = () => {
   const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [authenticated, setAuthenticated] = React.useState<boolean>(false);
+
   const fetchUser = async () => {
-    //   storeFront()
+    setLoading(true);
+    const { token } = cookies.get();
+    const user = await getUser(token);
+    if (user) {
+      setUser(user);
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+      setUser(null);
+    }
+
+    setLoading(false);
   };
 
-  React.useEffect(() => {}, []);
+  const logout = () => {
+    removeCookies("token");
+    setUser(null);
+    setAuthenticated(false);
+  };
 
-  return {};
+  React.useEffect(() => {
+    fetchUser();
+  }, []);
+
+  return { user, loading, authenticated, logout };
 };
 
 export default useUser;
