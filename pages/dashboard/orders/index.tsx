@@ -18,6 +18,7 @@ const OrderHistoryQuery = gql`
       orders(first: 5) {
         edges {
           node {
+            id
             orderNumber
             currencyCode
             currentTotalPrice {
@@ -72,7 +73,7 @@ const Order = ({ order }: { order: Order }) => (
         </dd>
       </div>
     </dl>
-    <Link href={`/dashboard/orders/${order.orderNumber}`}>
+    <Link href={`/dashboard/orders/${order.id}`}>
       <a className="flex items-center justify-center w-full px-4 py-2 mt-6 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-auto sm:mt-0">
         Details
         <span className="sr-only">for order {order.orderNumber}</span>
