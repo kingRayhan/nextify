@@ -4,6 +4,15 @@ import { getCookie, removeCookies } from "cookies-next";
 import cookies from "nookies";
 import React from "react";
 
+const gql = String.raw;
+const LogoutQuery = gql`
+  mutation Logout($token: String!) {
+    customerAccessTokenDelete(customerAccessToken: $token) {
+      deletedAccessToken
+    }
+  }
+`;
+
 const useUser = () => {
   const [user, setUser] = React.useState(null);
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -24,10 +33,13 @@ const useUser = () => {
     setLoading(false);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const { token } = cookies.get();
     removeCookies("token");
     setUser(null);
     setAuthenticated(false);
+
+    await storeFront(LogoutQuery, { token });
 
     // reload
     window.location.reload();

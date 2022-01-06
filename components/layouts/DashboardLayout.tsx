@@ -55,7 +55,11 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({
+  children,
+  pageTitle = "Dashboard",
+  subTitle = "",
+}) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
 
@@ -206,7 +210,7 @@ export default function DashboardLayout({ children }) {
             </button>
             <div className="flex justify-between flex-1 px-4">
               <div className="flex flex-1">
-                <form className="flex w-full md:ml-0" action="#" method="GET">
+                {/* <form className="flex w-full md:ml-0" action="#" method="GET">
                   <label htmlFor="search-field" className="sr-only">
                     Search
                   </label>
@@ -222,16 +226,16 @@ export default function DashboardLayout({ children }) {
                       name="search"
                     />
                   </div>
-                </form>
+                </form> */}
               </div>
               <div className="flex items-center ml-4 md:ml-6">
-                <button
+                {/* <button
                   type="button"
                   className="p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </button>
+                </button> */}
 
                 {/* Profile dropdown */}
                 <Account />
@@ -243,15 +247,16 @@ export default function DashboardLayout({ children }) {
             <div className="py-6">
               <div className="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                 <h1 className="text-2xl font-semibold text-gray-900">
-                  Dashboard
+                  {pageTitle}
                 </h1>
+                <p className="mt-2 text-sm text-gray-500">{subTitle}</p>
               </div>
               <div className="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
                 {/* Replace with your content */}
                 <div className="py-4">
-                  {/* <div className="border-4 border-gray-200 border-dashed rounded-lg h-96" />
-                   */}
-                  {children}
+                  <div className="p-6 border-4 border-gray-200 border-dashed rounded-lg min-h-96">
+                    {children}
+                  </div>
                 </div>
                 {/* End replace */}
               </div>

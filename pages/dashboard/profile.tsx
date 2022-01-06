@@ -1,12 +1,18 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import getUser from "@/lib/getUser";
+import Head from "next/head";
 import React from "react";
 
 const ProfilePage = () => {
   return (
-    <DashboardLayout>
-      <h1>Profile Page</h1>
-    </DashboardLayout>
+    <>
+      <Head>
+        <title>My Profile | Dashboard</title>
+      </Head>
+      <DashboardLayout pageTitle="My Profile">
+        <h1>Profile Page</h1>
+      </DashboardLayout>
+    </>
   );
 };
 
