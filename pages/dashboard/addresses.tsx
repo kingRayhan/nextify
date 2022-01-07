@@ -12,20 +12,20 @@ const addresses = () => {
 
 export default addresses;
 
-export const getServerSideProps = async (ctx) => {
-  const { token } = ctx.req.cookies;
-  const user = await getUser(token);
+// export const getServerSideProps = async (ctx) => {
+//   const { token } = ctx.req.cookies;
+//   const user = await getUser(token);
 
-  if (!user) {
-    return {
-      redirect: {
-        destination: "/auth/login",
-        permanent: false,
-      },
-    };
-  }
+//   if (!user) {
+//     return {
+//       redirect: {
+//         destination: "/auth/login",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };

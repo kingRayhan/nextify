@@ -45,7 +45,10 @@
 //   // More orders...
 // ];
 
-const OrderHistory = ({ products }) => {
+import Link from "next/link";
+
+const OrderHistory = ({ products = [], visible = false }) => {
+  if (!visible) return null;
   return (
     <div className="space-y-20">
       <div>
@@ -63,13 +66,19 @@ const OrderHistory = ({ products }) => {
                 scope="col"
                 className="hidden w-1/5 py-3 pr-8 font-normal sm:table-cell"
               >
-                Price
+                Unit Price
               </th>
               <th
                 scope="col"
                 className="hidden py-3 pr-8 font-normal sm:table-cell"
               >
-                Status
+                Quantity
+              </th>
+              <th
+                scope="col"
+                className="hidden py-3 pr-8 font-normal sm:table-cell"
+              >
+                Net Price
               </th>
               <th scope="col" className="w-0 py-3 font-normal text-right">
                 Info
@@ -77,13 +86,13 @@ const OrderHistory = ({ products }) => {
             </tr>
           </thead>
           <tbody className="text-sm border-b border-gray-200 divide-y divide-gray-200 sm:border-t">
-            {products.map((product) => (
-              <tr key={product.id}>
+            {products.map((product, i) => (
+              <tr key={i}>
                 <td className="py-6 pr-8">
                   <div className="flex items-center">
                     <img
-                      src={product.varient.image.url}
-                      alt={product.varient.image.altText}
+                      src={product.variant.image.url}
+                      alt={product.variant.image.altText}
                       className="object-cover object-center w-16 h-16 mr-6 rounded"
                     />
                     <div>
@@ -95,17 +104,24 @@ const OrderHistory = ({ products }) => {
                   </div>
                 </td>
                 <td className="hidden py-6 pr-8 sm:table-cell">
-                  {/* {product.price} */}
+                  {product.variant.priceV2.currencyCode}{" "}
+                  {product.variant.priceV2.amount}
                 </td>
                 <td className="hidden py-6 pr-8 sm:table-cell">
-                  {/* {product.status} */}
+                  {product.quantity}
+                </td>
+                <td className="hidden py-6 pr-8 sm:table-cell">
+                  {product.variant.priceV2.currencyCode}{" "}
+                  {product.variant.priceV2.amount * product.quantity}
                 </td>
                 <td className="py-6 font-medium text-right whitespace-nowrap">
-                  {/* <a href={product.href} className="text-indigo-600">
-                    View
-                    <span className="hidden lg:inline"> Product</span>
-                    <span className="sr-only">, {product.name}</span>
-                  </a> */}
+                  <Link href={`/products/${product.variant.product.handle}`}>
+                    <a className="text-indigo-600">
+                      View
+                      <span className="hidden lg:inline"> Product</span>
+                      <span className="sr-only">{product.variant.title}</span>
+                    </a>
+                  </Link>
                 </td>
               </tr>
             ))}
