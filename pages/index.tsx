@@ -57,7 +57,7 @@ const query = gql`
         }
       }
     }
-    collections(first: 3) {
+    collections(first: 6) {
       edges {
         node {
           id
