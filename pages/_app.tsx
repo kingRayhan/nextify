@@ -5,8 +5,16 @@ import "@/styles/app.scss";
 // import "@shopify/polaris/build/esm/styles.css";
 import toast, { Toaster } from "react-hot-toast";
 import { Provider as ReduxtProvider } from "react-redux";
-
+import useCart from "@/hooks/useCart";
+import { useEffect } from "react";
 function NuxtifyApp({ Component, pageProps }) {
+  const { boot: bootCart } = useCart();
+
+  useEffect(() => {
+    // boot the storefront cart initially
+    bootCart();
+  }, []);
+
   pageProps.toast = toast;
   return (
     <ReduxtProvider store={store}>

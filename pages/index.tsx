@@ -8,23 +8,18 @@ import { getCookies, getCookie, setCookies, removeCookies } from "cookies-next";
 
 import Head from "next/head";
 import { useEffect } from "react";
+import useCart from "@/hooks/useCart";
 
 const HomePage = ({ products, collections, user }) => {
-  useEffect(() => {
-    // setCookies("user", {
-    //   name: "John Doe",
-    //   email: "example@example.com",
-    //   phone: "+1-234-567-8910",
-    //   address: "123 Main St, Anytown, CA 12345",
-    // });
-  });
+  const { increment, count } = useCart();
   return (
     <>
       <Head>
         <title>Next Shopify</title>
       </Head>
       <AppLayout>
-        <pre>{JSON.stringify(user, undefined, 2)}</pre>
+        <pre>{count}</pre>
+        <button onClick={increment}>+</button>
         <PromoSection />
         <ProductList2 products={products} />
         <FeaturedCategory collections={collections} />

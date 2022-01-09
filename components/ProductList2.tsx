@@ -54,11 +54,11 @@ const Product = ({ product }) => {
           </a>
         </Link>
       </div>
-      {/* <div className="mt-6">
+      <div className="mt-6">
         <button className="relative flex items-center justify-center w-full px-8 py-2 text-sm font-medium text-gray-900 bg-gray-100 border border-transparent rounded-md hover:bg-gray-200">
           Add to bag<span className="sr-only">, {product.title}</span>
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };
