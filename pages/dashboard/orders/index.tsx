@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/layouts/DashboardLayout";
 import LoadingIndicator from "@/components/LoadingIndicator";
-import OrderHistory from "@/components/OrderHistory";
-import getUser from "@/lib/getUser";
+// import OrderHistory from "@/components/OrderHistory";
+// import getUser from "@/lib/getUser";
 import storeFront from "@/lib/storeFront";
 import Order from "@/models/Order.interface";
 import classNames from "classnames";
@@ -82,7 +82,7 @@ const Order = ({ order }: { order: Order }) => (
   </div>
 );
 
-const orderSummeries = () => {
+const OrderSummeries = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -116,7 +116,7 @@ const orderSummeries = () => {
   );
 };
 
-export default orderSummeries;
+export default OrderSummeries;
 
 // export const getServerSideProps = async (ctx) => {
 //   const { token } = ctx.req.cookies;
